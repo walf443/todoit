@@ -1,3 +1,4 @@
+# vim: encoding=utf-8
 require 'rubygems'
 require 'rack'
 require 'classx'
@@ -142,7 +143,7 @@ module Todoit
         module_function
         def on_index
           tasks = [
-            { :title => 'Todoitを作る', }
+            { :title => 'Todoitを作る' }
           ]
           view('Erubis').render({ :tasks => tasks })
         end
