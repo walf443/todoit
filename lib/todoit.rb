@@ -8,28 +8,6 @@ path = File.expand_path(File.join(File.dirname(__FILE__)))
 $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
 
 module Todoit
-  module Context
-    include ClassX
-
-  end
-
-  module Utils
-    @@context = nil
-    def context
-      if @@context
-        @@context
-      else
-        @@context = Context.new
-      end
-    end
-
-    %w{ view }.each do |meth|
-      define_method meth do
-        context.__send__ meth
-      end
-    end
-  end
-
   module Model
   end
 
