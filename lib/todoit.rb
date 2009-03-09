@@ -71,7 +71,7 @@ module Todoit
       end
     end
 
-    module Dispacher
+    module Dispatcher
       extend Utils
 
       @@cached_controller_of = {}
@@ -111,7 +111,7 @@ module Todoit
         self.web_context = Web::Context.new({
           :request => Rack::Request.new(env),
         })
-        rule = Dispacher.dispatch env
+        rule = Dispatcher.dispatch env
         warn rule.inspect
         meth = "on_#{rule[:action]}"
         return not_found unless rule[:controller]
