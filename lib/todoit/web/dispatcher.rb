@@ -11,6 +11,8 @@ module Todoit
         path_array.shift # ignore first slash.
         action = ( %r{/$} =~ path_info ) ? 'index' : path_array.pop
         cache_controller_key = path_array.join('/')
+
+        # memorize right path for performance.
         unless @@cached_controller_of[cache_controller_key]
           controller = path_array.inject(Todoit::Web::C) {|init, str|
            init.const_get(str.capitalize)
