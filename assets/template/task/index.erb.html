@@ -1,0 +1,15 @@
+<html>
+<head>
+  <title>タスク一覧</title>
+</head>
+<body>
+  <h1>タスク一覧</h1>
+
+  <ul id="tasks">
+    <% @tasks.each do |task| %>
+      <li class="task"><%= task[:title] %></li>
+    <% end %>
+  </ul>
+</body>
+</html>
+

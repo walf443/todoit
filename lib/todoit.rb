@@ -2,6 +2,7 @@
 require 'rubygems'
 require 'rack'
 require 'classx'
+require 'erubis'
 
 module Todoit
   module Context
@@ -37,7 +38,7 @@ module Todoit
         :kind_of => Rack::Request
 
     end
-    
+
     module Utils
       def web_context
         $web_context
@@ -121,6 +122,21 @@ module Todoit
       end
     end
 
+    module View
+      module Erubis
+        def self.render file, params={}
+          str = ''
+          File.open file do |io|
+            str = io.read
+          end
+          engine = ::Erubis::EscapedEruby.new(str)
+          result = engine.evaluate(params)
+
+          [200, { 'Content-Type' => 'text/html' }, result ]
+        end
+      end
+    end
+
     module C
       extend Utils
 
@@ -143,9 +159,11 @@ module Todoit
         module_function
         def on_index
           tasks = [
-            { :title => 'Todoitを作る' }
+            { :title => 'Todoitを作る' },
+            { :title => 'Moduleの自動再読みこみ機能を作る' },
+            { :title => 'Modelを作る' },
           ]
-          view('Erubis').render({ :tasks => tasks })
+          View::Erubis.render('assets/template/task/index.erb.html', { :tasks => tasks })
         end
       end
 
