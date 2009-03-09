@@ -161,6 +161,7 @@ module Todoit
           tasks = [
             { :title => 'Todoitを作る' },
             { :title => 'Moduleの自動再読みこみ機能を作る' },
+            { :title => 'Templateをコンパイルした状態でキャッシュする' },
             { :title => 'Modelを作る' },
           ]
           View::Erubis.render('assets/template/task/index.erb.html', { :tasks => tasks })
