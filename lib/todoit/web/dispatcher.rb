@@ -1,7 +1,8 @@
 module Todoit
   module Web
     module Dispatcher
-      extend Utils
+      extend ::Todoit::FunctionImporter
+      import_module_function Utils, :request
 
       @@cached_controller_of = {}
 

@@ -4,7 +4,6 @@ module Todoit
   module Web
     module C
       module Task
-        extend Utils
 
         module_function
         def on_index

@@ -2,7 +2,8 @@ module Todoit
   module Web
     module C
       module Root
-        extend Utils
+        extend FunctionImporter
+        import_module_function Utils, :web_context
 
         module_function
 

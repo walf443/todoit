@@ -1,6 +1,10 @@
 module Todoit
   module Web
     module Utils
+      extend ::Todoit::FunctionExporter
+
+      module_function
+
       def web_context
         $web_context
       end
