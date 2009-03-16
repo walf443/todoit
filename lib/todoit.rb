@@ -11,6 +11,7 @@ module Todoit
   module Model
   end
 
+  autoload :Context, 'todoit/context'
   autoload :FunctionExporter, 'todoit/utils'
   autoload :FunctionImporter, 'todoit/utils'
 

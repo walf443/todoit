@@ -5,6 +5,10 @@ module Todoit
 
       module_function
 
+      def context
+        $context
+      end
+
       def web_context
         $web_context
       end

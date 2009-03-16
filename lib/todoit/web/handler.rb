@@ -7,6 +7,10 @@ module Todoit
 
       def initialize conf={}
         @conf = conf
+        raise if defined? $context
+        $context = Todoit::Context.new({
+          :view  => Todoit::Web::View::Erubis.new,
+        })
       end
 
       def call env

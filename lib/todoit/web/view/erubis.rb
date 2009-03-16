@@ -4,14 +4,22 @@ require 'erubis'
 module Todoit
   module Web
     module View
-      module Erubis
-        def self.render file, params={}
-          str = ''
-          File.open file do |io|
-            str = io.read
+      class Erubis
+        def initialize
+          @precompile_cache_of = {};
+        end
+
+        def render file, params={}
+          if @precompile_cache_of[file]
+          else
+            str = ''
+            File.open file do |io|
+              str = io.read
+            end
+            engine = ::Erubis::EscapedEruby.new(str)
+            @precompile_cache_of[file] = engine
           end
-          engine = ::Erubis::EscapedEruby.new(str)
-          result = engine.evaluate(params)
+          result = @precompile_cache_of[file].evaluate(params)
 
           [200, { 'Content-Type' => 'text/html' }, result ]
         end
