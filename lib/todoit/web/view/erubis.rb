@@ -10,7 +10,7 @@ module Todoit
           @precompile_cache_of = {};
         end
 
-        def render file, params={}
+        def make_content file, params={}
           if @config[:cache] && @precompile_cache_of[file]
           else
             str = ''
@@ -20,8 +20,12 @@ module Todoit
             engine = ::Erubis::EscapedEruby.new(str)
             @precompile_cache_of[file] = engine
           end
-          result = @precompile_cache_of[file].evaluate(params)
 
+          @precompile_cache_of[file].evaluate(params)
+        end
+
+        def render file, params={}
+          result = make_content file, params
           [200, { 'Content-Type' => 'text/html' }, result ]
         end
       end
