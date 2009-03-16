@@ -9,10 +9,7 @@ module Todoit
 
         module_function
         def on_index
-          tasks = [
-            { :title => 'Todoitを作る' },
-            { :title => 'Modelを作る' },
-          ]
+          tasks = Todoit::Model::Task.get
           context.view.render('assets/template/task/index.erb.html', { :tasks => tasks })
         end
       end

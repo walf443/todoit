@@ -9,6 +9,7 @@ $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
 
 module Todoit
   module Model
+    autoload :Task, 'todoit/model/task'
   end
 
   autoload :Context, 'todoit/context'
