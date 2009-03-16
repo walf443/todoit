@@ -5,12 +5,13 @@ module Todoit
   module Web
     module View
       class Erubis
-        def initialize
+        def initialize config={}
+          @config = config
           @precompile_cache_of = {};
         end
 
         def render file, params={}
-          if @precompile_cache_of[file]
+          if @config[:cache] && @precompile_cache_of[file]
           else
             str = ''
             File.open file do |io|

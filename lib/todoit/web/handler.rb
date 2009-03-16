@@ -9,7 +9,7 @@ module Todoit
         @conf = conf
         raise if defined? $context
         $context = Todoit::Context.new({
-          :view  => Todoit::Web::View::Erubis.new,
+          :view  => Todoit::Web::View::Erubis.new(:cache => true),
         })
       end
 
