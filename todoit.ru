@@ -6,4 +6,4 @@ require 'todoit'
 
 use ::Rack::Reloader # develop only
 use ::Rack::ContentLength
-run ::Todoit::Web::Handler.new
+run(::Todoit::Web::Handler.new({ :env => env }))
