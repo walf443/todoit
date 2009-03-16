@@ -39,6 +39,12 @@ module Todoit
       def not_found
         [404, { 'Content-Type' => 'text/plain', }, 'NOT FOUND' ] 
       end
+
+      def nested_const_get nested_const, base=Object
+        nested_const.split("::").inject(base) {|c, str|
+          c.const_get(str)
+        }
+      end
     end
   end
 end

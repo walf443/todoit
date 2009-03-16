@@ -3,7 +3,7 @@ module Todoit
   module Web
     class Handler
       extend Todoit::FunctionImporter
-      import_function Utils, :web_context, :web_context=, :not_found
+      import_function Utils, :web_context, :web_context=, :not_found, :nested_const_get
 
       def initialize conf={}
         @conf = conf
@@ -20,10 +20,15 @@ module Todoit
         rule = Dispatcher.dispatch env
         warn rule.inspect
         meth = "on_#{rule[:action]}"
-        return not_found unless rule[:controller]
-        return not_found unless rule[:controller].respond_to? meth
+        begin
+          controller = nested_const_get(rule[:controller], Todoit::Web::C)
+        rescue NameError => e
+          return not_found
+        end
+        return not_found unless controller
+        return not_found unless controller.respond_to? meth
 
-        rule[:controller].__send__(meth)
+        controller.__send__(meth)
       end
     end
   end

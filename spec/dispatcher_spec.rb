@@ -22,9 +22,9 @@ describe Todoit::Web::Dispatcher do
     end
 
     set_fixtures([
-      [ { '/'             => { :controller => Todoit::Web::C::Root, :action => 'index' } }, 'root path' ],
-      [ { '/foo'          => { :controller => Todoit::Web::C::Root, :action => 'foo' } },   'a action' ],
-      [ { '/foo/bar'      => { :controller => Todoit::Web::C::Foo, :action => 'bar' } },   'controller and action' ],
+      [ { '/'             => { :controller => "Root", :action => 'index' } }, 'root path' ],
+      [ { '/foo'          => { :controller => "Root", :action => 'foo' } },   'a action' ],
+      [ { '/foo/bar'      => { :controller => "Foo", :action => 'bar' } },   'controller and action' ],
     ])
   end
 end

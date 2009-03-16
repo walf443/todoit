@@ -15,18 +15,13 @@ module Todoit
 
         # memorize right path for performance.
         unless @@cached_controller_of[cache_controller_key]
-          controller = path_array.inject(Todoit::Web::C) {|init, str|
-           init.const_get(str.capitalize)
-          }
-          if controller == Todoit::Web::C
-            controller = Todoit::Web::C::Root
+          controller = path_array.map {|i| i.capitalize }.join("::")
+          if controller == ""
+            controller = "Root"
           end
           @@cached_controller_of[cache_controller_key] = controller
         end
         { :controller => @@cached_controller_of[cache_controller_key], :action => action }
-      rescue NameError => e
-        warn e
-        { :controller => nil, :action => nil }
       end
 
       module_function :dispatch
