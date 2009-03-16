@@ -8,7 +8,7 @@ module Todoit
       def initialize conf={}
         @conf = conf
         @env = conf[:env] || "product"
-        raise if defined? $context
+        raise "context already defined!! : #{ $context.inspect }" if defined? $context
         $context = Todoit::Context.new({
           :view  => Todoit::Web::View::Erubis.new(:cache => (@env == "product")),
         })
