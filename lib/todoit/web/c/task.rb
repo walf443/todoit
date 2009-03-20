@@ -11,6 +11,7 @@ module Todoit
         def on_index
           tasks = Todoit::Model::Task.get
           context.view.render('assets/template/layout.erb.html', {
+            :title => "タスク一覧",
             :main_template => 'assets/template/task/index.erb.html',
             :tasks => tasks ,
           })
