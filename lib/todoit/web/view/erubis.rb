@@ -8,26 +8,9 @@ module Todoit
       class Erubis
         include ClassX
 
-        has :cache,
-          :optional => true,
-          :default  => true
-
-        def after_init
-          @precompile_cache_of = {}
-        end
-
         def make_content file, params={}
-          if self.cache && @precompile_cache_of[file]
-          else
-            str = ''
-            File.open file do |io|
-              str = io.read
-            end
-            engine = ::Erubis::EscapedEruby.new(str)
-            @precompile_cache_of[file] = engine
-          end
-
-          @precompile_cache_of[file].evaluate(params)
+          engine = ::Erubis::EscapedEruby.load_file(file)
+          engine.evaluate(params)
         end
 
         def render file, params={}
