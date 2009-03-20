@@ -1,20 +1,8 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="ja" xml:lang="ja" xmlns="http://www.w3.org/1999/xhtml" />
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta http-equiv="Content-Style-Type" content="text/css" />
-  <meta http-equiv="content-script-type" content="text/javascript" />
-  <title>タスク一覧</title>
-</head>
-<body>
-  <h1>タスク一覧</h1>
+<h1>タスク一覧</h1>
 
-  <ul id="tasks">
-    <% @tasks.each do |task| %>
-      <li class="task"><%= task.title %> ( <%= task.created_at.strftime('%m-%d') %>作成, <%= task.updated_at.strftime('%m-%d') %>更新)</li>
-    <% end %>
-  </ul>
-</body>
-</html>
+<ul id="tasks">
+  <% @tasks.each do |task| %>
+    <li class="task"><%= task.title %> ( <%= task.created_at.strftime('%m-%d') %>作成, <%= task.updated_at.strftime('%m-%d') %>更新)</li>
+  <% end %>
+</ul>
 

@@ -1,15 +1,23 @@
 require 'rubygems'
 require 'erubis'
-require 'classx'
 
 module Todoit
   module Web
     module View
       class Erubis
-        include ClassX
+
+        class Context < ::Erubis::Context
+          def include file
+            engine = ::Erubis::EscapedEruby.load_file(file)
+            engine.evaluate(self)
+          end
+        end
 
         def make_content file, params={}
           engine = ::Erubis::EscapedEruby.load_file(file)
+          unless params.kind_of? Context
+            params = Context.new(params)
+          end
           engine.evaluate(params)
         end
 
