@@ -1,17 +1,23 @@
 require 'rubygems'
 require 'erubis'
+require 'classx'
 
 module Todoit
   module Web
     module View
       class Erubis
-        def initialize config={}
-          @config = config
-          @precompile_cache_of = {};
+        include ClassX
+
+        has :cache,
+          :optional => true,
+          :default  => true
+
+        def after_init
+          @precompile_cache_of = {}
         end
 
         def make_content file, params={}
-          if @config[:cache] && @precompile_cache_of[file]
+          if self.cache && @precompile_cache_of[file]
           else
             str = ''
             File.open file do |io|
