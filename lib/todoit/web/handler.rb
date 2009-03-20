@@ -19,14 +19,13 @@ module Todoit
           :request => Rack::Request.new(env),
         })
         rule = Dispatcher.dispatch env
-        warn rule.inspect
-        meth = "on_#{rule[:action]}"
         begin
           controller = nested_const_get(rule[:controller], Todoit::Web::C)
         rescue NameError => e
           return not_found
         end
         return not_found unless controller
+        meth = "on_#{rule[:action]}"
         return not_found unless controller.respond_to? meth
 
         controller.__send__(meth)
