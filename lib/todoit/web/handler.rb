@@ -12,6 +12,7 @@ module Todoit
         $context = Todoit::Context.new({
           :view  => Todoit::Web::View::Erubis.new(:tmpl_path => 'assets/template/'),
         })
+        @rule_cache_of = {}
       end
 
       def call env
@@ -19,16 +20,20 @@ module Todoit
           :request => Rack::Request.new(env),
         })
         rule = Dispatcher.dispatch env
-        begin
-          controller = nested_const_get(rule[:controller], Todoit::Web::C)
-        rescue NameError => e
-          return not_found
+        unless @rule_cache_of[rule]
+          begin
+            controller = nested_const_get(rule[:controller], Todoit::Web::C)
+          rescue NameError => e
+            return not_found
+          end
+          return not_found unless controller
+          meth = "on_#{rule[:action]}"
+          return not_found unless controller.respond_to? meth
+          @rule_cache_of[rule] = { :controller => controller, :meth => meth }
         end
-        return not_found unless controller
-        meth = "on_#{rule[:action]}"
-        return not_found unless controller.respond_to? meth
 
-        controller.__send__(meth)
+        rule = @rule_cache_of[rule]
+        rule[:controller].__send__ rule[:meth]
       end
     end
   end
