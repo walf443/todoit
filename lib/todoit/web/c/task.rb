@@ -10,8 +10,8 @@ module Todoit
         module_function
         def on_index
           tasks = Todoit::Model::Task.get
-          context.view.render('assets/template/layout.erb.html', {
-            :main_template => 'assets/template/task/index.erb.html',
+          context.view.render('/layout.erb.html', {
+            :main_template => '/task/index.erb.html',
             :tasks => tasks ,
           })
         end
