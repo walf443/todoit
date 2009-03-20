@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'erubis'
+require 'classx'
 
 module Todoit
   module Web
