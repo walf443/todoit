@@ -9,8 +9,7 @@ module Todoit
 
         class Context < ::Erubis::Context
           def include file
-            engine = ::Erubis::EscapedEruby.load_file(File.join(@view_config.tmpl_path, file))
-            engine.evaluate(self)
+            @view_config.make_content(file, self)
           end
         end
 
