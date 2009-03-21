@@ -18,9 +18,9 @@ module Todoit
 
       has :rdb,
         :lazy => true,
-        :handles => %w[ put get mget out ],
+        :handles => %w[ put get mget out genuid ],
         :default => lambda {|mine|
-          tt = ::TokyoTyrant::RDB.new
+          tt = ::TokyoTyrant::RDBTBL.new
           tt.open(mine.host, mine.port) or
             raise ConnectionError, tt.errmsg
 
