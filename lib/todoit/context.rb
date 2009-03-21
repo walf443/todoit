@@ -6,5 +6,7 @@ module Todoit
     include ClassX
 
     has :view, :respond_to => :render
+
+    has :tokyotyrant
   end
 end
