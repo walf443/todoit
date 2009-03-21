@@ -22,10 +22,14 @@ module Todoit
         :default => lambda {|mine|
           tt = ::TokyoTyrant::RDB.new
           tt.open(mine.host, mine.port) or
-            raise ConnectionError
+            raise ConnectionError, tt.errmsg
 
           tt
         }
+
+      def after_init
+        self.rdb # for creating connection for tokyotyrant in initaize.
+      end
 
     end
   end
