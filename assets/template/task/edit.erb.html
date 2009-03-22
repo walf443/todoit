@@ -5,9 +5,17 @@
 <% if @is_error %>
   <p>入力が正しくありません。</p>
 <% end %>
-<div>
+<table>
 <form method="POST" action="/task/edit" >
   <input type="hidden" name="task_id" value="<%= @task['id'] %>" />
-  <span>タスク名</span><input type="text" name="title" value="<%= @task['title'] %>" /> <input type="submit" value="編集する" />
+  <% %w[title value story_point ].each do |col| %>
+    <tr>
+      <th><%= Todoit::Model::Task.attribute_of[col].config[:desc] %></th>
+      <td><input type="text" name="<%= col %>" value="<%= @task[col] %>" /></td>
+    </tr>
+  <% end %>
+  <tr>
+    <td colspan="2"><input type="submit" value="編集する" /></td>
+  </tr>
 </form>
-</div>
+</table>

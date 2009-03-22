@@ -1,5 +1,6 @@
 # vim: encoding=utf8 あいうえお
 require 'time'
+require 'rational'
 require 'rubygems'
 require 'classx'
 
@@ -21,11 +22,32 @@ module Todoit
         :optional => true
 
       has :title,
+        :desc => "タスク名",
         :kind_of  => String,
         :validate => proc {|val| !val.nil? && val != "" }
 
+      has :value,
+        :desc => "価値",
+        :kind_of => Fixnum,
+        :default => 1,
+        :coerce => {
+          String => proc {|val| val.to_i }
+        }
+
+      has :story_point,
+        :desc => "作業工数",
+        :kind_of => Fixnum,
+        :default => 1,
+        :coerce => {
+          String => proc {|val| val.to_i }
+        }
+
       has :created_at, time_spec
       has :updated_at, time_spec
+
+      def real_value
+        Rational(self.value, self.story_point)
+      end
 
       def to_tokyotyrant
         hash = self.to_hash
@@ -40,6 +62,7 @@ module Todoit
 
         def single id
           task = context.tokyotyrant.get("task_#{id}")
+          task[:id] = id
           task.nil? ? nil : self.new(task)
         end
 
@@ -48,7 +71,7 @@ module Todoit
             id = key.sub("#{context.tokyotyrant.name_space}task_", '')
             val[:id] = id
             self.new(val)
-          }.sort_by {|i| i.id }
+          }.sort_by {|i| -1 * i.real_value }
         end
 
         def add hash
