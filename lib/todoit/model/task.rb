@@ -54,6 +54,7 @@ module Todoit
         %w( created_at updated_at ).each do |col|
           hash[col] = hash[col].strftime('%Y-%m-%d %H:%M:%S %z')
         end
+        hash.delete 'id'
         hash
       end
 
