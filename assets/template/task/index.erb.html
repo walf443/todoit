@@ -14,7 +14,7 @@
   </tr>
   <% @tasks.each do |task| %>
     <tr class="task" id="task_<%= task.id %>">
-      <td><%= task.real_value.to_f %></td>
+      <td><%= "%.02f" % task.real_value.to_f %></td>
       <td><%= task.value %></td>
       <td><%= task.story_point %></td>
       <td><%= task.title %></td> 
