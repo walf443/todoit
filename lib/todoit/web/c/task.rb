@@ -9,7 +9,7 @@ module Todoit
 
         module_function
         def on_index
-          tasks = Todoit::Model::Task.get
+          tasks = Todoit::Model::Task.get_list
           context.view.render('/layout.erb.html', {
             :main_template => '/task/index.erb.html',
             :tasks => tasks ,
@@ -29,6 +29,22 @@ module Todoit
           context.view.render('/layout.erb.html', {
             :main_template => '/task/add.erb.html',
             :is_error      => is_error,
+          })
+        end
+
+        def on_edit
+          param = web_context.request.params
+          id = param['task_id'] or
+            return redirect('/task/')
+
+          task = Todoit::Model::Task.single(id) or
+            return redirect('/task/')
+
+          params = task.to_hash.merge(param)
+
+          context.view.render('/layout.erb.html', {
+            :main_template => '/task/edit.erb.html',
+            :task          => params,
           })
         end
       end

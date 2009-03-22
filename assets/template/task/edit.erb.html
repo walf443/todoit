@@ -1,0 +1,13 @@
+<% @title = "タスクの編集" %>
+
+<h1><%= @title %></h1>
+
+<% if @is_error %>
+  <p>入力が正しくありません。</p>
+<% end %>
+<div>
+<form method="POST" action="/task/edit" >
+  <input type="hidden" name="task_id" value="<%= @task['id'] %>" />
+  <span>タスク名</span><input type="text" name="title" value="<%= @task['title'] %>" /> <input type="submit" value="編集する" />
+</form>
+</div>
