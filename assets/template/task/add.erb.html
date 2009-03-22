@@ -7,6 +7,6 @@
 <% end %>
 <div>
 <form method="POST" action="/task/add" >
-  <span>タスク名</span><input type="text" name="title" /> <input type="submit" value="追加する" />
+  <%== include 'include/form/task.erb.html' %>
 </form>
 </div>

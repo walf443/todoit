@@ -1,0 +1,12 @@
+<table>
+  <% if @task %><input type="hidden" name="task_id" value="<%= @task['id'] %>" /><% end %>
+  <% %w[title value story_point ].each do |col| %>
+    <tr>
+      <th><%= Todoit::Model::Task.attribute_of[col].config[:desc] %></th>
+      <td><input type="text" name="<%= col %>" <% if @task %>value="<%= @task[col] %>"<% end %> /></td>
+    </tr>
+  <% end %>
+  <tr>
+    <td colspan="2"><input type="submit" value="<% if @task %>編集する<% else %>追加する<% end %>" /></td>
+  </tr>
+</table>
