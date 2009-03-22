@@ -33,6 +33,7 @@ module Todoit
         end
 
         def on_edit
+          is_error = false
           param = web_context.request.params
           id = param['task_id'] or
             return redirect('/task/')
@@ -42,9 +43,19 @@ module Todoit
 
           params = task.to_hash.merge(param)
 
+          if web_context.request.post?
+            begin
+              Todoit::Model::Task.update(id, params)
+              return redirect('/task/')
+            rescue ClassX::InvalidAttrArgument => e
+              is_error = true
+            end
+          end
+
           context.view.render('/layout.erb.html', {
             :main_template => '/task/edit.erb.html',
             :task          => params,
+            :is_error      => is_error,
           })
         end
       end

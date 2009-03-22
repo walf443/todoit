@@ -52,9 +52,13 @@ module Todoit
         end
 
         def add hash
+          id = context.tokyotyrant.genuid
+          update(id, hash)
+        end
+
+        def update id, hash
           task = self.new(hash)
-          task.id = context.tokyotyrant.genuid
-          context.tokyotyrant.put("task_#{task.id}", task.to_tokyotyrant)
+          context.tokyotyrant.put("task_#{id}", task.to_tokyotyrant)
         end
 
       end
