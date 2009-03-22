@@ -38,7 +38,7 @@ module Todoit
       %w[ out get ].each do |meth|
         define_method meth do |key|
           key = "#{self.name_space}#{key}"
-          self.rdb.__send__(meth, key, val) or
+          self.rdb.__send__(meth, key) or
             raise Error, self.rdb.errmsg
         end
       end
