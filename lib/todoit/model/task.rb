@@ -58,6 +58,7 @@ module Todoit
 
         def update id, hash
           task = self.new(hash)
+          task.updated_at = Time.now
           context.tokyotyrant.put("task_#{id}", task.to_tokyotyrant)
         end
 
