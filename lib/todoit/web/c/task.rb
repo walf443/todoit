@@ -17,12 +17,18 @@ module Todoit
         end
 
         def on_add
+          is_error = false
           if web_context.request.post?
-            Todoit::Model::Task.add(web_context.request.params)
-            return redirect('/task/')
+            begin
+              Todoit::Model::Task.add(web_context.request.params)
+              return redirect('/task/')
+            rescue ClassX::InvalidAttrArgument => e
+              is_error = true
+            end
           end
           context.view.render('/layout.erb.html', {
             :main_template => '/task/add.erb.html',
+            :is_error      => is_error,
           })
         end
       end

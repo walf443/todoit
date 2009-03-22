@@ -20,7 +20,10 @@ module Todoit
       has :id,
         :optional => true
 
-      has :title
+      has :title,
+        :kind_of  => String,
+        :validate => proc {|val| !val.nil? && val != "" }
+
       has :created_at, time_spec
       has :updated_at, time_spec
 
