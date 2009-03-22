@@ -40,6 +40,10 @@ module Todoit
         [404, { 'Content-Type' => 'text/plain', }, 'NOT FOUND' ] 
       end
 
+      def redirect location, status=302
+        [status, { 'Content-Type' => 'text/plain', 'Location' => location }, 'REDIRECT' ] 
+      end
+
       def nested_const_get nested_const, base=Object
         nested_const.split("::").inject(base) {|c, str|
           c.const_get(str)

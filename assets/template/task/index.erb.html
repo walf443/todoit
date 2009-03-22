@@ -1,6 +1,7 @@
 <% @title = "タスク一覧" %>
 <h1><%= @title %></h1>
 
+<a href="/task/add">タスクの追加</a>
 <ul id="tasks">
   <% @tasks.each do |task| %>
     <li class="task" id="task_<%= task.id %>"><%= task.title %> ( <%= task.created_at.strftime('%m-%d') %>作成, <%= task.updated_at.strftime('%m-%d') %>更新)</li>

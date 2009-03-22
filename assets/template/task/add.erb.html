@@ -1,0 +1,9 @@
+<% @title = "タスクの追加" %>
+
+<h1><%= @title %></h1>
+
+<div>
+<form method="POST" action="/task/add" >
+  <span>タスク名</span><input type="text" name="title" /> <input type="submit" value="追加する" />
+</form>
+</div>

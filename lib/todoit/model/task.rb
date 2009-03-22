@@ -13,13 +13,24 @@ module Todoit
         :kind_of => Time,
         :coerce => {
           String => proc {|val| Time.parse(val) },
-        }
+        },
+        :default  => proc { Time.now },
       }
 
-      has :id
+      has :id,
+        :optional => true
+
       has :title
       has :created_at, time_spec
       has :updated_at, time_spec
+
+      def to_tokyotyrant
+        hash = self.to_hash
+        %w( created_at updated_at ).each do |col|
+          hash[col] = hash[col].strftime('%Y-%m-%d %H:%M:%S %z')
+        end
+        hash
+      end
 
       class << self
         ::Todoit::Utils.export self, :context
@@ -31,6 +42,12 @@ module Todoit
             val[:id] = id
             self.new(val)
           }.sort_by {|i| i.id }
+        end
+
+        def add hash
+          task = self.new(hash)
+          task.id = context.tokyotyrant.genuid
+          context.tokyotyrant.put("task_#{task.id}", task.to_tokyotyrant)
         end
 
       end
