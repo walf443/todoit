@@ -39,7 +39,6 @@ module Todoit
         ::Todoit::Utils.export self, :context
 
         def get
-          tasks = []
           context.tokyotyrant.get_like('task').map {|key, val|
             id = key.sub("#{context.tokyotyrant.name_space}task_", '')
             val[:id] = id
