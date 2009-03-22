@@ -70,5 +70,16 @@ module Todoit
       end
     end
   end
+
+  module Utils
+      extend ::Todoit::FunctionExporter
+
+      module_function
+
+      def context
+        $context
+      end
+  end
+
 end
 

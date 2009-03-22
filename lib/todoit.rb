@@ -16,6 +16,7 @@ module Todoit
   autoload :Context, 'todoit/context'
   autoload :FunctionExporter, 'todoit/utils'
   autoload :FunctionImporter, 'todoit/utils'
+  autoload :Utils, 'todoit/utils'
 
   module Web
     autoload :Context,    'todoit/web/context'

@@ -21,11 +21,13 @@ module Todoit
       has :updated_at, time_spec
 
       class << self
+        ::Todoit::Utils.export self, :context
+
         def get
-          [
-            { :title => "Todoitを作る" , :created_at => '2009-03-01 10:00:00', :updated_at => '2009-03-16 22:40' },
-            { :title => "Modelを作る", :created_at  => '2009-03-05 10:00:00', :updated_at => '2009-03-16 22:40' },
-          ].map {|i| self.new(i) }
+          tasks = []
+          context.tokyotyrant.get_like('task').map {|key, val|
+            self.new(val)
+          }
         end
       end
 
