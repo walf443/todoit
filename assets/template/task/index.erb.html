@@ -2,12 +2,26 @@
 <h1><%= @title %></h1>
 
 <a href="/task/add">タスクの追加</a>
-<ul id="tasks">
+<table id="tasks">
+  <tr>
+    <th>優先度</th>
+    <% %w[ value story_point title ].each do |col| %>
+      <th><%= Todoit::Model::Task.attribute_of[col].config[:desc] %></th>
+    <% end %>
+    <th>追加日</th>
+    <th>更新日</th>
+    <th>&nbsp;</th>
+  </tr>
   <% @tasks.each do |task| %>
-    <li class="task" id="task_<%= task.id %>">
-      <%= task.real_value.to_f %> <%= task.title %> ( <%= task.created_at.strftime('%m-%d') %>作成, <%= task.updated_at.strftime('%m-%d') %>更新)
-      <a href="/task/edit?task_id=<%= task.id %>">編集</a>
-    </li>
+    <tr class="task" id="task_<%= task.id %>">
+      <td><%= task.real_value.to_f %></td>
+      <td><%= task.value %></td>
+      <td><%= task.story_point %></td>
+      <td><%= task.title %></td> 
+      <td><%= task.created_at.strftime('%m-%d') %></td>
+      <td><%= task.updated_at.strftime('%m-%d') %></td>
+      <td><a href="/task/edit?task_id=<%= task.id %>">編集</a></td>
+    </tr>
   <% end %>
-</ul>
+</table>
 
