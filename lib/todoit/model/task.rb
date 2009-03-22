@@ -16,6 +16,7 @@ module Todoit
         }
       }
 
+      has :id
       has :title
       has :created_at, time_spec
       has :updated_at, time_spec
@@ -26,9 +27,12 @@ module Todoit
         def get
           tasks = []
           context.tokyotyrant.get_like('task').map {|key, val|
+            id = key.sub("#{context.tokyotyrant.name_space}task_", '')
+            val[:id] = id
             self.new(val)
-          }
+          }.sort_by {|i| i.id }
         end
+
       end
 
     end

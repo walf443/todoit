@@ -3,7 +3,7 @@
 
 <ul id="tasks">
   <% @tasks.each do |task| %>
-    <li class="task"><%= task.title %> ( <%= task.created_at.strftime('%m-%d') %>作成, <%= task.updated_at.strftime('%m-%d') %>更新)</li>
+    <li class="task" id="task_<%= task.id %>"><%= task.title %> ( <%= task.created_at.strftime('%m-%d') %>作成, <%= task.updated_at.strftime('%m-%d') %>更新)</li>
   <% end %>
 </ul>
 
