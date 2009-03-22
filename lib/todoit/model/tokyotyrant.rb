@@ -77,6 +77,7 @@ module Todoit
 
         raise Error, self.rdb.errmsg if self.rdb.mget(hash) < 0
 
+        # for ruby 1.9.1
         if ''.respond_to? :force_encoding
           hash.each do |key,val|
             val.each do |k,v|
