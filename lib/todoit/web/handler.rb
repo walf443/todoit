@@ -40,3 +40,8 @@ module Todoit
   end
 end
 
+# FIXME: どこに書くべきか。
+# 後始末
+at_exit do
+  $context.tokyotyrant.close
+end

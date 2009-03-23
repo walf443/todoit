@@ -35,6 +35,11 @@ module Todoit
           tt
       end
 
+      def close
+        self.rdb.close
+        self.rdb = nil
+      end
+
       def after_init
         self.rdb # for creating connection for tokyotyrant in initaize.
       end
