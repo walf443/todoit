@@ -24,12 +24,16 @@ module Todoit
         :lazy => true,
         :handles => %w[ put get mget out genuid ],
         :default => lambda {|mine|
+          mine.class.connect(mine.host, mine.port)
+        }
+
+      def self.connect host, port
           tt = ::TokyoTyrant::RDBTBL.new
-          tt.open(mine.host, mine.port) or
+          tt.open(host, port) or
             raise ConnectionError, tt.errmsg
 
           tt
-        }
+      end
 
       def after_init
         self.rdb # for creating connection for tokyotyrant in initaize.
