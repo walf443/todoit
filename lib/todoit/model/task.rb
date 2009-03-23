@@ -42,6 +42,14 @@ module Todoit
           String => proc {|val| val.to_i }
         }
 
+      has :status,
+        :desc => "状態",
+        :validate => proc {|val| %w( registered done ).include? val },
+        :default  => "registered",
+        :coerce => {
+          Symbol => proc {|val| val.to_s },
+        }
+
       has :created_at, time_spec
       has :updated_at, time_spec
 

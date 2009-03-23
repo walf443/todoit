@@ -11,16 +11,25 @@
     <th>追加日</th>
     <th>更新日</th>
     <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
   <% @tasks.each do |task| %>
-    <tr class="task" id="task_<%= task.id %>">
+    <tr class="task task-status-<%= task.status %>" id="task_<%= task.id %>">
       <td><%= "%.02f" % task.real_value.to_f %></td>
       <td><%= task.value %></td>
       <td><%= task.story_point %></td>
       <td><%= task.title %></td> 
       <td><%= task.created_at.strftime('%m-%d') %></td>
       <td><%= task.updated_at.strftime('%m-%d') %></td>
-      <td><a href="/task/edit?task_id=<%= task.id %>">編集</a></td>
+      <td><% if task.status == "registered" %><a href="/task/edit?task_id=<%= task.id %>">編集</a><% end %></td>
+      <td>
+        <% if task.status == "registered" %>
+          <form method="POST" action="/task/done">
+            <input type="hidden" name="task_id" value="<%= task.id %>" />
+            <input type="submit" value="完了" />
+          </form>
+        <% end %>
+      </td>
     </tr>
   <% end %>
 </table>

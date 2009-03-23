@@ -58,6 +58,22 @@ module Todoit
             :is_error      => is_error,
           })
         end
+
+        def on_done
+          return redirect('/task/') unless web_context.request.post?
+
+          param = web_context.request.params
+          id = param['task_id'] or
+            return redirect('/task/')
+
+          task = Todoit::Model::Task.single(id) or
+            return redirect('/task/')
+
+          task.status = :done
+          Todoit::Model::Task.update(id, task.to_hash)
+
+          return redirect('/task/')
+        end
       end
     end
   end
