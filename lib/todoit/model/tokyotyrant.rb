@@ -11,6 +11,8 @@ module Todoit
       class ConnectionError < RuntimeError; end
       class Error < RuntimeError; end
 
+      StorageType = ::TokyoTyrant::RDBTBL
+
       has :host,
         :default => "127.0.0.1"
 
@@ -28,7 +30,7 @@ module Todoit
         }
 
       def self.connect host, port
-          tt = ::TokyoTyrant::RDBTBL.new
+          tt = StorageType.new
           tt.open(host, port) or
             raise ConnectionError, tt.errmsg
 
@@ -40,23 +42,38 @@ module Todoit
         self.rdb = nil
       end
 
+      def reconnect
+        self.close
+        self.rdb = self.class.connect(self.host, self.port)
+      end
+
       def after_init
         self.rdb # for creating connection for tokyotyrant in initaize.
       end
 
       %w[ out get ].each do |meth|
         define_method meth do |key|
-          key = "#{self.name_space}#{key}"
-          self.rdb.__send__(meth, key) or
-            raise Error, self.rdb.errmsg
+          begin
+            key = "#{self.name_space}#{key}"
+            self.rdb.__send__(meth, key) or
+              raise_exeption(self.rdb.ecode)
+          rescue ConnectionError => e
+            reconnect
+            retry
+          end
         end
       end
 
       %w[ put putkeep putcat putnr ].each do |meth|
         define_method meth do |key, val|
-          key = "#{self.name_space}#{key}"
-          self.rdb.__send__(meth, key, val) or
-            raise Error, self.rdb.errmsg
+          begin
+            key = "#{self.name_space}#{key}"
+            self.rdb.__send__(meth, key, val) or
+              raise_exeption(self.rdb.ecode)
+          rescue ConnectionError => e
+            reconnect
+            retry
+          end
         end
       end
 
@@ -65,9 +82,12 @@ module Todoit
 
         result = self.rdb.fwmkeys(prefix, max)
         if result.size == 0
-          raise Error, self.rdb.errmsg
+          raise_exeption(self.rdb.ecode)
         end
         result
+      rescue ConnectionError => e
+        reconnect
+        retry
       end
 
       alias get_keys fwmkeys
@@ -84,7 +104,7 @@ module Todoit
           hash[key] = nil
         end
 
-        raise Error, self.rdb.errmsg if self.rdb.mget(hash) < 0
+        raise_exeption(self.rdb.ecode) if self.rdb.mget(hash) < 0
 
         # for ruby 1.9.1
         if ''.respond_to? :force_encoding
@@ -96,17 +116,25 @@ module Todoit
         end
 
         hash
+      rescue ConnectionError => e
+        retry
       end
 
-      def each &block
-        self.rdb.iterinit
-        while ( item = self.rdb.iternext )
-          block.call(item)
+      def raise_exeption ecode
+        case ecode
+        when StorageType::EKEEP, StorageType::ENOREC, StorageType::EMISC, StorageType::ESUCCESS
+          # pass
+        when StorageType::EREFUSED, 
+            StorageType::ESEND,
+            StorageType::ERECV
+          raise ConnectionError, self.rdb.errmsg
+        when StorageType::EINVALID, StorageType::ENOHOST
+          raise "some thing wrong: #{self.rdb.inspect}"
+        else
+          raise "unknown ecode: #{ecode}"
+
         end
       end
-
-      include Enumerable
-
     end
   end
 end
