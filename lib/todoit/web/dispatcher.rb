@@ -1,12 +1,15 @@
+require 'rubygems'
+require 'function_importer'
+
 module Todoit
   module Web
     module Dispatcher
-      extend ::Todoit::FunctionImporter
-      import_module_function Utils, :request
+      extend FunctionImporter
+      import_module_function Utils, :web_context, :request
 
       @@cached_controller_of = {}
 
-      def dispatch env
+      def self.dispatch env
         path_info = request.path_info
         path_array = path_info.split('/')
         path_array.shift # ignore first slash.
@@ -23,8 +26,6 @@ module Todoit
         end
         { :controller => @@cached_controller_of[cache_controller_key], :action => action }
       end
-
-      module_function :dispatch
     end
   end
 end

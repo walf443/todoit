@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'function_importer'
+
 module Todoit
   module Web
     module C

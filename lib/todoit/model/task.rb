@@ -1,4 +1,4 @@
-# vim: encoding=utf8 あいうえお
+# vim: encoding=utf-8 あいうえお
 require 'time'
 require 'rational'
 require 'rubygems'

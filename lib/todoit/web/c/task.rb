@@ -1,10 +1,12 @@
 # vim: encoding=utf-8
+require 'rubygems'
+require 'function_importer'
 
 module Todoit
   module Web
     module C
       module Task
-        extend Todoit::FunctionImporter
+        extend FunctionImporter
         import_module_function Utils, :context, :redirect
 
         module_function

@@ -1,6 +1,7 @@
 # vim: encoding=utf-8
 require 'rubygems'
 require 'rack'
+require 'function_importer'
 require 'classx'
 require 'erubis'
 
@@ -14,8 +15,6 @@ module Todoit
   end
 
   autoload :Context, 'todoit/context'
-  autoload :FunctionExporter, 'todoit/utils'
-  autoload :FunctionImporter, 'todoit/utils'
   autoload :Utils, 'todoit/utils'
 
   module Web

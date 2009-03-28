@@ -1,8 +1,10 @@
+require 'rubygems'
+require 'function_importer'
 
 module Todoit
   module Web
     class Handler
-      extend Todoit::FunctionImporter
+      extend FunctionImporter
       import_function Utils, :web_context, :web_context=, :not_found, :nested_const_get
 
       def initialize conf={}

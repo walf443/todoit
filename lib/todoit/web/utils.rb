@@ -1,9 +1,10 @@
+require 'rubygems'
+require 'function_importer'
+
 module Todoit
   module Web
     module Utils
-      extend ::Todoit::FunctionExporter
-
-      module_function
+      extend FunctionExporter
 
       def context
         $context
