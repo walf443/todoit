@@ -55,8 +55,16 @@ module Todoit
         define_method meth do |key|
           begin
             key = "#{self.name_space}#{key}"
-            self.rdb.__send__(meth, key) or
+            result = self.rdb.__send__(meth, key) or
               raise_exeption(self.rdb.ecode)
+
+            # for ruby 1.9.1
+            if ''.respond_to? :force_encoding
+              result.each do |k,v|
+                v.force_encoding('UTF-8')
+              end
+            end
+            result
           rescue ConnectionError => e
             reconnect
             retry
