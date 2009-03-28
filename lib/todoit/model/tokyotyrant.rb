@@ -24,7 +24,7 @@ module Todoit
 
       has :rdb,
         :lazy => true,
-        :handles => %w[ put get mget out genuid ],
+        :handles => %w[ genuid ],
         :default => lambda {|mine|
           mine.class.connect(mine.host, mine.port)
         }
