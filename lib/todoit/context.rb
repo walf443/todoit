@@ -5,7 +5,8 @@ module Todoit
   class Context
     include ClassX
 
-    has :view, :respond_to => :render
+    has :view, 
+      :respond_to => :render
 
     has :tokyotyrant
   end

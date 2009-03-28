@@ -11,10 +11,7 @@ module Todoit
         @conf = conf
         @env = conf[:env] || "product"
         raise "context already defined!! : #{ $context.inspect }" if defined? $context
-        $context = Todoit::Context.new({
-          :view  => Todoit::Web::View::Erubis.new(:tmpl_path => 'assets/template/'),
-          :tokyotyrant => Todoit::Model::TokyoTyrant.new,
-        })
+        Todoit.setup
         @rule_cache_of = {}
       end
 

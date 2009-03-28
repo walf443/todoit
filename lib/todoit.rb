@@ -33,5 +33,12 @@ module Todoit
     end
 
   end
+
+  def self.setup
+    $context = Todoit::Context.new({
+      :view  => Todoit::Web::View::Erubis.new(:tmpl_path => 'assets/template/'),
+      :tokyotyrant => Todoit::Model::TokyoTyrant.new,
+    })
+  end
 end
 
