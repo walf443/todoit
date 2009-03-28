@@ -7,7 +7,7 @@ module Todoit
     module C
       module Task
         extend FunctionImporter
-        import_module_function Utils, :context, :redirect
+        import_module_function Utils, :context, :web_context, :redirect
 
         module_function
         def on_index
