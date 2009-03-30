@@ -43,11 +43,29 @@ module Todoit
       #   end
       # end
 
+      # FIXME: もうちょいうまく抽象化したい感じ
+      def render layout, params={}
+        context.view.render(
+          Todoit::Web::Utils.guess_tmpl_name(layout),
+          { 
+            :main_template => Todoit::Web::Utils.guess_tmpl_name(web_context.request.path) 
+          }.merge(params)
+        )
+      end
+
+      def self.guess_tmpl_name path
+        if path =~ %r{/$}
+          path += "index"
+        end
+        "#{path}.erb.html"
+      end
+
       class ActionError < Exception; end
       class NotFound < ActionError; end
       class Redirect < ActionError; end
 
       # it should be called with around_action.
+
       def not_found!
         raise NotFound, [404, { 'Content-Type' => 'text/plain', }, 'NOT FOUND' ]
       end

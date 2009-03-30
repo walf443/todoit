@@ -7,15 +7,14 @@ module Todoit
     module C
       module Task
         extend FunctionImporter
-        import_module_function Utils, :context, :web_context, :redirect!
+        import_module_function Utils, :context, :web_context, :redirect!, :render
 
         module_function
 
         def on_index
           tasks = Todoit::Model::Task.get_list
-          context.view.render('/layout.erb.html', {
-            :main_template => '/task/index.erb.html',
-            :tasks => tasks ,
+          render(:layout, {
+            :tasks => tasks,
           })
         end
 
@@ -29,9 +28,8 @@ module Todoit
               is_error = true
             end
           end
-          context.view.render('/layout.erb.html', {
-            :main_template => '/task/add.erb.html',
-            :is_error      => is_error,
+          render(:layout, {
+            :is_error => is_error,
           })
         end
 
@@ -55,8 +53,7 @@ module Todoit
             end
           end
 
-          context.view.render('/layout.erb.html', {
-            :main_template => '/task/edit.erb.html',
+          render(:layout, {
             :task          => params,
             :is_error      => is_error,
           })
