@@ -7,7 +7,7 @@ module Todoit
     module C
       module Task
         extend FunctionImporter
-        import_module_function Utils, :context, :web_context, :redirect
+        import_module_function Utils, :context, :web_context, :redirect!
 
         module_function
         def on_index
@@ -23,7 +23,7 @@ module Todoit
           if web_context.request.post?
             begin
               Todoit::Model::Task.add(web_context.request.params)
-              return redirect('/task/')
+              redirect!('/task/')
             rescue ClassX::InvalidAttrArgument => e
               is_error = true
             end
@@ -38,17 +38,17 @@ module Todoit
           is_error = false
           param = web_context.request.params
           id = param['task_id'] or
-            return redirect('/task/')
+            redirect!('/task/')
 
           task = Todoit::Model::Task.single(id) or
-            return redirect('/task/')
+            redirect!('/task/')
 
           params = task.to_hash.merge(param)
 
           if web_context.request.post?
             begin
               Todoit::Model::Task.update(id, params)
-              return redirect('/task/')
+              redirect!('/task/')
             rescue ClassX::InvalidAttrArgument => e
               is_error = true
             end
@@ -62,19 +62,19 @@ module Todoit
         end
 
         def on_done
-          return redirect('/task/') unless web_context.request.post?
+          redirect!('/task/') unless web_context.request.post?
 
           param = web_context.request.params
           id = param['task_id'] or
-            return redirect('/task/')
+            redirect!('/task/')
 
           task = Todoit::Model::Task.single(id) or
-            return redirect('/task/')
+            redirect!('/task/')
 
           task.status = :done
           Todoit::Model::Task.update(id, task.to_hash)
 
-          return redirect('/task/')
+          redirect!('/task/')
         end
       end
     end

@@ -5,7 +5,7 @@ module Todoit
   module Web
     class Handler
       extend FunctionImporter
-      import_function Utils, :web_context, :web_context=, :not_found, :nested_const_get
+      import_function Utils, :web_context, :web_context=, :around_action, :not_found!, :nested_const_get
 
       def initialize conf={}
         @conf = conf
@@ -19,22 +19,33 @@ module Todoit
         self.web_context = Web::Context.new({
           :request => Rack::Request.new(env),
         })
-        rule = Dispatcher.dispatch env
-        unless @rule_cache_of[rule]
-          begin
-            controller = nested_const_get(rule[:controller], Todoit::Web::C)
-          rescue NameError => e
-            return not_found
-          end
-          return not_found unless controller
-          meth = "on_#{rule[:action]}"
-          return not_found unless controller.respond_to? meth
-          @rule_cache_of[rule] = { :controller => controller, :meth => meth }
-        end
 
-        rule = @rule_cache_of[rule]
-        rule[:controller].__send__ rule[:meth]
+        rule = Dispatcher.dispatch env
+
+        around_action do
+          unless @rule_cache_of[rule]
+            begin
+              controller = nested_const_get(rule[:controller], Todoit::Web::C)
+            rescue NameError => e
+              warn e
+              not_found!
+            end
+
+            not_found! unless controller
+            meth = "on_#{rule[:action]}"
+            not_found! unless controller.respond_to? meth
+            @rule_cache_of[rule] = { :controller => controller, :meth => meth }
+          end
+
+          rule = @rule_cache_of[rule]
+          warn rule[:controller]
+          rule[:controller].__send__ rule[:meth]
+        end
       end
+
+      def routing rule
+      end
+
     end
   end
 end

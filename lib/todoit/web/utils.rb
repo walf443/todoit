@@ -37,12 +37,22 @@ module Todoit
       #   end
       # end
 
-      def not_found
-        [404, { 'Content-Type' => 'text/plain', }, 'NOT FOUND' ] 
+      def around_action &block
+        catch :not_found do
+          catch :redirect do
+            block.call
+          end
+        end
       end
 
-      def redirect location, status=302
-        [status, { 'Content-Type' => 'text/plain', 'Location' => location }, 'REDIRECT' ] 
+      # it should be called with around_action.
+      def not_found!
+        throw :not_found, [404, { 'Content-Type' => 'text/plain', }, 'NOT FOUND' ]
+      end
+
+      # it should be called with around_action.
+      def redirect! location, status=302
+        throw :redirect, [status, { 'Content-Type' => 'text/plain', 'Location' => location }, 'REDIRECT' ] 
       end
 
       def nested_const_get nested_const, base=Object
@@ -50,6 +60,7 @@ module Todoit
           c.const_get(str)
         }
       end
+
     end
   end
 end

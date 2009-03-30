@@ -30,6 +30,7 @@ module Todoit
     module C
       autoload :Root, 'todoit/web/c/root'
       autoload :Task, 'todoit/web/c/task'
+      autoload :User, 'todoit/web/c/user'
     end
 
   end
