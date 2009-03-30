@@ -22,25 +22,23 @@ module Todoit
 
         rule = Dispatcher.dispatch env
 
-        around_action do
-          unless @rule_cache_of[rule]
-            begin
-              controller = nested_const_get(rule[:controller], Todoit::Web::C)
-            rescue NameError => e
-              warn e
-              not_found!
-            end
-
-            not_found! unless controller
-            meth = "on_#{rule[:action]}"
-            not_found! unless controller.respond_to? meth
-            @rule_cache_of[rule] = { :controller => controller, :meth => meth }
+        unless @rule_cache_of[rule]
+          begin
+            controller = nested_const_get(rule[:controller], Todoit::Web::C)
+          rescue NameError => e
+            not_found!
           end
 
-          rule = @rule_cache_of[rule]
-          warn rule[:controller]
-          rule[:controller].__send__ rule[:meth]
+          not_found! unless controller
+          meth = "on_#{rule[:action]}"
+          not_found! unless controller.respond_to? meth
+          @rule_cache_of[rule] = { :controller => controller, :meth => meth }
         end
+
+        rule = @rule_cache_of[rule]
+        rule[:controller].__send__ rule[:meth]
+      rescue Utils::ActionError => e
+        e.message
       end
 
       def routing rule

@@ -25,6 +25,12 @@ module Todoit
         end
       end
 
+      def nested_const_get nested_const, base=Object
+        nested_const.split("::").inject(base) {|c, str|
+          c.const_get(str)
+        }
+      end
+
       # hmm. Rack recommend this usage.
       # 
       # def web_context_init app
@@ -37,28 +43,18 @@ module Todoit
       #   end
       # end
 
-      def around_action &block
-        catch :not_found do
-          catch :redirect do
-            block.call
-          end
-        end
-      end
+      class ActionError < Exception; end
+      class NotFound < ActionError; end
+      class Redirect < ActionError; end
 
       # it should be called with around_action.
       def not_found!
-        throw :not_found, [404, { 'Content-Type' => 'text/plain', }, 'NOT FOUND' ]
+        raise NotFound, [404, { 'Content-Type' => 'text/plain', }, 'NOT FOUND' ]
       end
 
       # it should be called with around_action.
       def redirect! location, status=302
-        throw :redirect, [status, { 'Content-Type' => 'text/plain', 'Location' => location }, 'REDIRECT' ] 
-      end
-
-      def nested_const_get nested_const, base=Object
-        nested_const.split("::").inject(base) {|c, str|
-          c.const_get(str)
-        }
+        raise Redirect, [status, { 'Content-Type' => 'text/plain', 'Location' => location }, 'REDIRECT' ] 
       end
 
     end
