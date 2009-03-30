@@ -23,16 +23,7 @@ module Todoit
         rule = Dispatcher.dispatch env
 
         unless @rule_cache_of[rule]
-          begin
-            controller = nested_const_get(rule[:controller], Todoit::Web::C)
-          rescue NameError => e
-            not_found!
-          end
-
-          not_found! unless controller
-          meth = "on_#{rule[:action]}"
-          not_found! unless controller.respond_to? meth
-          @rule_cache_of[rule] = { :controller => controller, :meth => meth }
+          @rule_cache_of[rule] = routing rule
         end
 
         rule = @rule_cache_of[rule]
@@ -42,6 +33,17 @@ module Todoit
       end
 
       def routing rule
+        begin
+          controller = nested_const_get(rule[:controller], Todoit::Web::C)
+        rescue NameError => e
+          not_found!
+        end
+
+        not_found! unless controller
+        meth = "on_#{rule[:action]}"
+        not_found! unless controller.respond_to? meth
+
+        { :controller => controller, :meth => meth }
       end
 
     end
