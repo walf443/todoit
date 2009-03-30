@@ -10,6 +10,7 @@ module Todoit
         import_module_function Utils, :context, :web_context, :redirect!
 
         module_function
+
         def on_index
           tasks = Todoit::Model::Task.get_list
           context.view.render('/layout.erb.html', {
