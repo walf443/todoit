@@ -45,12 +45,13 @@ module Todoit
 
       # FIXME: もうちょいうまく抽象化したい感じ
       def render layout, params={}
-        context.view.render(
+        result = context.view.render(
           Todoit::Web::Utils.guess_tmpl_name(layout),
           { 
             :main_template => Todoit::Web::Utils.guess_tmpl_name(web_context.request.path) 
           }.merge(params)
         )
+        [200, { 'Content-Type' => 'text/html' }, result ]
       end
 
       def self.guess_tmpl_name path
