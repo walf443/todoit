@@ -5,7 +5,7 @@ module Todoit
   module Web
     class Handler
       extend FunctionImporter
-      import_function Utils, :web_context, :web_context=, :around_action, :not_found!, :nested_const_get
+      import_function Utils, :web_context, :web_context=, :not_found!, :nested_const_get
 
       def initialize conf={}
         @conf = conf

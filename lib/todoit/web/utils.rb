@@ -65,13 +65,10 @@ module Todoit
       class NotFound < ActionError; end
       class Redirect < ActionError; end
 
-      # it should be called with around_action.
-
       def not_found!
         raise NotFound, [404, { 'Content-Type' => 'text/plain', }, 'NOT FOUND' ]
       end
 
-      # it should be called with around_action.
       def redirect! location, status=302
         raise Redirect, [status, { 'Content-Type' => 'text/plain', 'Location' => location }, 'REDIRECT' ] 
       end
