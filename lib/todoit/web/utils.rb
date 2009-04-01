@@ -55,10 +55,20 @@ module Todoit
       end
 
       def self.guess_tmpl_name path
+        view_class = $context.view.class
+        # autoloadしてるので不要なやつを読みこみたくないのね
+
+        tmpl_type = case view_class.to_s
+        when /Erubis/
+          'erb'
+        when /Haml/
+          'haml'
+        end
+
         if path =~ %r{/$}
           path += "index"
         end
-        "#{path}.erb.html"
+        "#{path}.#{tmpl_type}.html"
       end
 
       class ActionError < Exception; end

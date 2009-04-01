@@ -25,6 +25,7 @@ module Todoit
 
     module View
       autoload :Erubis,   'todoit/web/view/erubis'
+      autoload :Haml,     'todoit/web/view/haml'
     end
 
     module C
@@ -37,7 +38,8 @@ module Todoit
 
   def self.setup
     $context = Todoit::Context.new({
-      :view  => Todoit::Web::View::Erubis.new(:tmpl_path => 'assets/template/'),
+      # :view  => Todoit::Web::View::Erubis.new(:tmpl_path => 'assets/template/'),
+      :view  => Todoit::Web::View::Haml.new(:tmpl_path => 'assets/template/'),
       :tokyotyrant => Todoit::Model::TokyoTyrant.new,
     })
   end

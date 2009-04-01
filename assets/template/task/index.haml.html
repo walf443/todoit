@@ -1,0 +1,31 @@
+- @title = 'タスク一覧'
+
+%h1= @title
+
+%table{ :id => 'tasks' }
+  %tr
+    %th 優先度
+    - %w[ value story_point title ].each do |col|
+      %th= Todoit::Model::Task.attribute_of[col].config[:desc]
+    %th 追加日
+    %th 更新日
+    %th &nbsp;
+    %th &nbsp;
+  - tasks.each do |task|
+    %tr{ :class => "task task-status-#{task}", :id => "task_#{task.id}"}
+      %td= "%.02f" % task.real_value.to_f
+      %td= task.value
+      %td= task.story_point
+      %td= task.title
+      %td= task.created_at.strftime('%m-%d')
+      %td= task.updated_at.strftime('%m-%d')
+      %td
+        - if task.status == 'registered'
+          %a{:href => "/task/edit?task_id=#{task.id}"} 編集
+      %td
+        - if task.status == 'registered'
+          %form{:method => "POST", :action => "/task/done"}
+            %input{:type => "hidden", :name => "task_id", :value => task.id}
+            %input{:type => "submit", :value => "完了"}
+
+
