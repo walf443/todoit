@@ -16,22 +16,28 @@ module Todoit
       end
 
       def call env
-        self.web_context = Web::Context.new({
-          :request => Rack::Request.new(env),
-        })
+        res = nil
+        begin
+          self.web_context = Web::Context.new({
+            :request => Rack::Request.new(env),
+          })
 
-        rule = Dispatcher.dispatch env
+          rule = Dispatcher.dispatch env
 
-        unless @rule_cache_of[rule]
-          @rule_cache_of[rule] = routing rule
+          unless @rule_cache_of[rule]
+            @rule_cache_of[rule] = routing rule
+          end
+
+          rule = @rule_cache_of[rule]
+          res = rule[:controller].__send__ rule[:meth]
+        rescue Utils::ActionError => e
+          res = e.message
+        ensure
+          self.web_context.session.finalize
         end
-
-        rule = @rule_cache_of[rule]
-        rule[:controller].__send__ rule[:meth]
-      rescue Utils::ActionError => e
-        e.message
-      ensure
-        self.web_context.session.finalize
+        res = Rack::Response.new(res[2], res[0], res[1])
+        self.web_context.session.response_filter(res)
+        res.finish
       end
 
       def routing rule

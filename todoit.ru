@@ -6,6 +6,8 @@ require 'todoit'
 require 'rubygems'
 require 'rack/contrib/bounce_favicon'
 
+require 'securerandom' # hmm. it was encounterd Bus Error, if not this line.
+
 if env == "development"
   use ::Rack::Reloader 
 end

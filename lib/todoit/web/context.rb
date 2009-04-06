@@ -15,7 +15,7 @@ module Todoit
         :kind_of => HTTPSession,
         :lazy => true,
         :default => proc {|mine|
-          HTTPSession.new(
+          session = HTTPSession.new(
             :request => mine.request,
             :state => HTTPSession::State::Cookie.new(
               :domain => mine.request.host,
@@ -23,6 +23,9 @@ module Todoit
             ),
             :store => HTTPSession::Store::Null.new,
           )
+          session.setup
+
+          session
         }
 
       has :now,
