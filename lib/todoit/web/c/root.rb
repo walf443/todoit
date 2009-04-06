@@ -13,6 +13,7 @@ module Todoit
         def on_index
           require 'pp'
           pp web_context.request
+          pp web_context.session
           [200, { 'Content-Type' => 'text/plain', }, 'index' ]
         end
       end

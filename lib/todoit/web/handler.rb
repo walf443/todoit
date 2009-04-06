@@ -30,6 +30,8 @@ module Todoit
         rule[:controller].__send__ rule[:meth]
       rescue Utils::ActionError => e
         e.message
+      ensure
+        self.web_context.session.finalize
       end
 
       def routing rule
