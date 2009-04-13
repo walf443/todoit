@@ -22,7 +22,7 @@ module Todoit
             :request => Rack::Request.new(env),
           })
 
-          self.web_context.session.set('user_agent', self.web_context.request.env['HTTP_USER_AGENT'] )
+          self.web_context.session.set('user_agent', ( self.web_context.request.env['HTTP_USER_AGENT'] || '' ) )
 
           rule = Dispatcher.dispatch env
 
