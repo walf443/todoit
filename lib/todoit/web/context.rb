@@ -21,7 +21,7 @@ module Todoit
               :domain => mine.request.host,
               :expires => mine.now + 60 * 60 * 24,
             ),
-            :store => HTTPSession::Store::Null.new,
+            :store => Todoit::Model::Session,
           )
           session.setup
 

@@ -12,6 +12,7 @@ module Todoit
   module Model
     autoload :Task, 'todoit/model/task'
     autoload :TokyoTyrant, 'todoit/model/tokyotyrant'
+    autoload :Session, 'todoit/model/session'
   end
 
   autoload :Context, 'todoit/context'

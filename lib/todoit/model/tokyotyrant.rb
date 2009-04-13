@@ -59,7 +59,7 @@ module Todoit
               raise_exeption(self.rdb.ecode)
 
             # for ruby 1.9.1
-            if ''.respond_to? :force_encoding
+            if !result.nil? and ''.respond_to? :force_encoding
               result.each do |k,v|
                 v.force_encoding('UTF-8')
               end
