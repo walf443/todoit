@@ -23,6 +23,10 @@ module Todoit
     autoload :Handler,    'todoit/web/handler'
     autoload :Dispatcher, 'todoit/web/dispatcher'
 
+    module Middlewares
+      autoload :DebugScreen, 'todoit/web/middlewares/debug_screen'
+    end
+
     module View
       autoload :Erubis,   'todoit/web/view/erubis'
       autoload :Haml,     'todoit/web/view/haml'
@@ -44,4 +48,3 @@ module Todoit
     })
   end
 end
-

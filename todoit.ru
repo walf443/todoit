@@ -8,10 +8,12 @@ require 'rack/contrib/bounce_favicon'
 
 require 'securerandom' # hmm. it was encounterd Bus Error, if not this line.
 
+use ::Rack::ContentLength
+use ::Rack::BounceFavicon
+
 if env == "development"
   use ::Rack::Reloader 
+  use ::Todoit::Web::Middlewares::DebugScreen
 end
 
-use ::Rack::BounceFavicon
-use ::Rack::ContentLength
 run(::Todoit::Web::Handler.new({ :env => env }))
